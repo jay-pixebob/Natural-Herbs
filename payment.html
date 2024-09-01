@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your existing CSS -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .payment-form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input[type="text"], input[type="email"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745; /* Green */
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green */
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>Payment Information</h1>
+    <div class="payment-form">
+        <form id="payment-info">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="text" id="card-number" placeholder="Card Number" required>
+            <input type="number" id="expiry" placeholder="MM/YY" required>
+            <input type="number" id="cvv" placeholder="CVV" required>
+            <div class="total">Total Amount: $<span id="payment-amount">0.00</span></div>
+            <button type="submit">Proceed to Payment</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const totalAmount = localStorage.getItem('totalAmount');
+            document.getElementById('payment-amount').textContent = totalAmount ? totalAmount : '0.00';
+        });
+
+        document.getElementById('payment-info').addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert('Payment submitted! This is a mock payment. In a real application, you would process the payment here.');
+            // Optionally clear local storage after processing payment
+            localStorage.removeItem('totalAmount');
+            // Redirect or further processing
+        });
+    </script>
+</body>
+</html>

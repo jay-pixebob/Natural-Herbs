@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shopping Store</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        header {
+            background: rgba(53, 66, 74, 0.9);
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 15px;
+            margin-right: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+            color: #007bff;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            display: flex;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%; /* Fixed width */
+        }
+
+        .product {
+            margin: 20px;
+            width: 250px; /* Fixed width */
+        }
+
+        .product-inner {
+            position: relative;
+            width: 100%;
+            height: 350px; /* Fixed height */
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-front, .product-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 5px;
+        }
+
+        .product-front {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .product-back {
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(180deg);
+            padding: 20px;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .product img:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+            transition: right 0.3s ease;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 20px 0;
+            background-color: rgba(53, 66, 74, 0.9);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Shopping Store</h1>
+        <nav>
+            <ul>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><button id="cart-trigger">Cart (<span id="cart-count">0</span>)</button></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <li><a href="#" class="category" data-category="all">All Products</a></li>
+            <li><a href="#" class="category" data-category="category1">Category 1</a></li>
+            <li><a href="#" class="category" data-category="category2">Category 2</a></li>
+            <li><a href="#" class="category" data-category="category3">Category 3</a></li>
+        </ul>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search for products...">
+    </div>
+
+    <main>
+        <section id="products" class="product-container">
+            <h2>Our Featured Products</h2>
+            <div class="product" data-category="category1">
+                <div class="product-inner">
+                    <div class="product-front">
+                        <h3>Product 1</h3>
+                        <img src="https://via.placeholder.com/250" alt="Product 1 Image">
+                        <p>Price: $10</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-back">
+                        <p>More details about Product 1.</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product" data-category="category2">
+                <div class="product-inner">
+                    <div class="product-front">
+                        <h3>Product 2</h3>
+                        <img src="https://via.placeholder.com/250" alt="Product 2 Image">
+                        <p>Price: $20</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-back">
+                        <p>More details about Product 2.</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product" data-category="category3">
+                <div class="product-inner">
+                    <div class="product-front">
+                        <h3>Product 3</h3>
+                        <img src="https://via.placeholder.com/250" alt="Product 3 Image">
+                        <p>Price: $15</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-back">
+                        <p>More details about Product 3.</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="cart" class="cart-sidebar">
+        <h2>Your Cart</h2>
+        <div id="cart-items"></div>
+        <p>Total Amount: $<span id="total-amount">0.00</span></p>
+        <button id="close-cart">Close</button>
+        <button id="place-order">Place Order</button>
+    </div>
+
+    <footer>
+        <p>© 2023 My Shopping Store</p>
+        <div id="contact">
+            <h3>Contact Us</h3>
+            <p>Email: contact@myshoppingstore.com</p>
+        </div>
+        <div id="about">
+            <h3>About Us</h3>
+            <p>We're an online store dedicated to bringing you the best products at the best prices!</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+        let cartCount = 0;
+        let totalAmount = 0;
+
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productElement = this.closest('.product');
+                const productName = productElement.querySelector('.product-front h3').textContent;
+                const productPrice = parseFloat(productElement.querySelector('.product-front p').textContent.replace('Price: $', ''));
+
+                cart.push({ name: productName, price: productPrice });
+                cartCount++;
+                totalAmount += productPrice;
+
+                document.getElementById('cart-count').textContent = cartCount;
+                document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+                showCart();
+                updateCartItems();
+            });
+        });
+
+        document.getElementById('cart-trigger').addEventListener('click', () => {
+            showCart();
+            updateCartItems();
+        });
+
+        document.getElementById('close-cart').addEventListener('click', () => {
+            closeCart();
+        });
+
+        document.getElementById('place-order').addEventListener('click', () => {
+            localStorage.setItem('totalAmount', totalAmount.toFixed(2));
+            window.location.href = 'payment.html';
+        });
+
+        function showCart() {
+            document.getElementById('cart').classList.add('open');
+        }
+
+        function closeCart() {
+            document.getElementById('cart').classList.remove('open');
+        }
+
+        function updateCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+
+                const cancelButton = document.createElement('button');
+                cancelButton.textContent = 'Cancel';
+                cancelButton.onclick = () => {
+                    cancelOrder(index);
+                };
+
+                itemElement.appendChild(cancelButton);
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+
+        function cancelOrder(index) {
+            const price = cart[index].price;
+            cart.splice(index, 1);
+            cartCount--;
+            totalAmount -= price;
+            document.getElementById('cart-count').textContent = cartCount;
+            document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+            updateCartItems();
+        }
+
+        // Search functionality
+        document.getElementById('search-bar').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const products = document.querySelectorAll('.product');
+
+            products.forEach(product => {
+                const productName = product.querySelector('.product-front h3').textContent.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    product.style.display = '';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        });
+
+        // Category filtering functionality
+        document.querySelectorAll('.category').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.getAttribute('data-category');
+                const products = document.querySelectorAll('.product');
+
+                products.forEach(product => {
+                    if (category === 'all' || product.getAttribute('data-category') === category) {
+                        product.style.display = '';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
